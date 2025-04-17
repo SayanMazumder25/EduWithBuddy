@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduWithBuddy - Learn Together</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="responsive.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<style>
+    * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+:root {
+    --primary-color: #4a90e2;
+    --secondary-color: #2c3e50;
+    --accent-color: #e74c3c;
+    --text-color: #333;
+    --light-gray: #f5f6fa;
+    --white: #ffffff;
+}
+
+body {
+    line-height: 1.6;
+    color: var(--text-color);
+}
+
+/* Navbar styles */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 5%;
+    background-color: var(--white);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+    height: 60px;
+}
+
+.logo-container {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.logo {
+    height: 40px;
+    width: auto;
+}
+
+.site-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--primary-color);
+    text-decoration: none;
+}
+
+.nav-links {
+    display: flex;
+    gap: 2rem;
+}
+
+.nav-link {
+    text-decoration: none;
+    color: var(--text-color);
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.nav-link:hover {
+    color: var(--primary-color);
+}
+
+.nav-link.active {
+    color: var(--primary-color);
+}
+
+/* Auth button styles */
+.auth-buttons {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.auth-buttons .btn {
+    padding: 0.5rem 1.5rem;
+    border-radius: 5px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    display: inline-block;
+}
+
+.auth-buttons .login-btn {
+    background-color: transparent;
+    color: var(--primary-color);
+    border: 2px solid var(--primary-color);
+}
+
+.auth-buttons .signup-btn {
+    background-color: var(--primary-color);
+    color: var(--white);
+    border: 2px solid var(--primary-color);
+}
+
+.auth-buttons .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.auth-buttons .login-btn:hover {
+    background-color: rgba(74, 144, 226, 0.1);
+}
+
+.auth-buttons .signup-btn:hover {
+    background-color: #357abd;
+}
+
+/* Hero section */
+.hero {
+    padding: 8rem 5% 4rem;
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: var(--white);
+    text-align: center;
+}
+
+.hero-content {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.hero h1 {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+.hero p {
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+}
+
+.search-container {
+    display: flex;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.search-input {
+    flex: 1;
+    padding: 1rem;
+    border: none;
+    border-radius: 5px 0 0 5px;
+    font-size: 1rem;
+}
+
+.search-btn {
+    padding: 1rem 2rem;
+    background-color: var(--accent-color);
+    color: var(--white);
+    border: none;
+    border-radius: 0 5px 5px 0;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.search-btn:hover {
+    background-color: #c0392b;
+}
+
+/* Features section */
+.features {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    padding: 4rem 5%;
+    background-color: var(--light-gray);
+}
+
+.feature-card {
+    background-color: var(--white);
+    padding: 2rem;
+    border-radius: 10px;
+    text-align: center;
+    transition: transform 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+}
+
+.feature-card i {
+    font-size: 2.5rem;
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+}
+
+.feature-card h3 {
+    margin-bottom: 1rem;
+    color: var(--secondary-color);
+}
+
+/* Trending section */
+.trending {
+    padding: 4rem 5%;
+    background-color: var(--light-gray);
+}
+
+.trending h2 {
+    text-align: center;
+    margin-bottom: 2rem;
+    color: var(--secondary-color);
+}
+
+.trending-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+}
+
+.education-card {
+    background-color: var(--white);
+    padding: 2rem;
+    border-radius: 10px;
+    text-align: center;
+    transition: transform 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.education-card:hover {
+    transform: translateY(-5px);
+}
+
+.education-card .emoji {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+.education-card h3 {
+    color: var(--secondary-color);
+    margin-bottom: 1rem;
+}
+
+.education-card p {
+    color: var(--text-color);
+    line-height: 1.6;
+}
+
+/* Footer styles */
+footer {
+    background-color: var(--secondary-color);
+    color: var(--white);
+    padding: 4rem 5% 2rem;
+}
+
+.footer-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.footer-section h4 {
+    margin-bottom: 1rem;
+}
+
+.footer-section a {
+    color: var(--white);
+    text-decoration: none;
+    display: block;
+    margin-bottom: 0.5rem;
+    transition: color 0.3s ease;
+}
+
+.footer-section a:hover {
+    color: var(--primary-color);
+}
+
+.social-links {
+    display: flex;
+    gap: 1rem;
+}
+
+.social-links a {
+    font-size: 1.5rem;
+}
+
+.footer-bottom {
+    text-align: center;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .navbar {
+        flex-direction: column;
+        padding: 1rem;
+    }
+
+    .nav-links {
+        margin: 1rem 0;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .hero {
+        padding-top: 12rem;
+    }
+
+    .hero h1 {
+        font-size: 2rem;
+    }
+
+    .search-container {
+        flex-direction: column;
+    }
+
+    .search-input {
+        border-radius: 5px;
+        margin-bottom: 1rem;
+    }
+
+    .search-btn {
+        border-radius: 5px;
+    }
+
+    .auth-buttons {
+        margin-top: auto;
+        padding: 1rem;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .auth-buttons .btn {
+        width: 100%;
+        text-align: center;
+        padding: 0.8rem;
+    }
+}
+
+.about-us {
+    padding: 4rem 5%;
+    background-color: var(--light-gray);
+    text-align: center;
+}
+
+.about-us h2 {
+    color: var(--secondary-color);
+    margin-bottom: 2rem;
+}
+
+.team-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    margin-bottom: 3rem;
+}
+
+.team-member {
+    background-color: var(--white);
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.team-member:hover {
+    transform: translateY(-5px);
+}
+
+.team-member i {
+    font-size: 2.5rem;
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+}
+
+.team-member h3 {
+    color: var(--secondary-color);
+    margin-bottom: 0.5rem;
+}
+
+.team-member p {
+    color: var(--text-color);
+}
+
+.team-member p i {
+    font-size: 1rem;
+    margin-right: 0.5rem;
+}
+
+.college-info {
+    background-color: var(--white);
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    display: inline-block;
+    margin-top: 2rem;
+}
+
+.college-info i {
+    font-size: 2.5rem;
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+}
+
+.college-info h3 {
+    color: var(--secondary-color);
+    font-size: 1.2rem;
+}
+
+@media (max-width: 768px) {
+    .team-container {
+        grid-template-columns: 1fr;
+    }
+    
+    .college-info {
+        width: 100%;
+    }
+}
+
+.contact-links {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.contact-links a {
+    color: var(--white);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: color 0.3s ease;
+}
+
+.contact-links a:hover {
+    color: var(--primary-color);
+}
+
+.contact-links i {
+    font-size: 1rem;
+}
+
+/* Hamburger Menu Styles */
+.menu-toggle {
+    display: none;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 30px;
+    height: 21px;
+    cursor: pointer;
+    z-index: 1000;
+    margin-right: 1rem;
+    background: transparent;
+    border: none;
+    padding: 0;
+}
+
+.menu-icon {
+    width: 100%;
+    height: 3px;
+    background-color: var(--primary-color);
+    transition: all 0.3s ease;
+    display: block;
+}
+
+.menu-overlay {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: 100%;
+    height: 100vh;
+    background-color: transparent;
+    z-index: 998;
+    transition: all 0.4s ease;
+    display: flex;
+    flex-direction: column;
+    padding-top: 80px;
+}
+
+.menu-overlay.active {
+    right: 0;
+}
+
+.menu-toggle.active span:first-child {
+    transform: rotate(45deg) translate(6px, 6px);
+}
+
+.menu-toggle.active span:nth-child(2) {
+    opacity: 0;
+}
+
+.menu-toggle.active span:last-child {
+    transform: rotate(-45deg) translate(6px, -6px);
+}
+
+.nav-links {
+    display: flex;
+    gap: 2rem;
+}
+
+@media (max-width: 768px) {
+    .menu-toggle {
+        display: flex;
+    }
+
+    .nav-links {
+        display: none;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1.5rem;
+        padding: 2rem;
+    }
+
+    .nav-links.active {
+        display: flex;
+        position: fixed;
+        top: 60px;
+        right: 0;
+        width: 100%;
+        height: calc(100vh - 60px);
+        background-color: rgba(255, 255, 255, 0.95);
+        z-index: 999;
+    }
+
+    .nav-link {
+        color: var(--text-color);
+        font-size: 1.1rem;
+        width: 100%;
+        padding: 0.5rem 0;
+        transition: all 0.3s ease;
+    }
+
+    .nav-link:hover {
+        color: var(--primary-color);
+        padding-left: 0.5rem;
+    }
+
+    .auth-buttons {
+        margin-top: auto;
+        padding: 1rem;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .auth-buttons .btn {
+        width: 100%;
+        text-align: center;
+    }
+}
+</style>
+<script>
+// Replace the trending questions data and loading function with:
+const educationCards = [
+    {
+        emoji: "📚",
+        title: "Learn Together",
+        description: "Join our community of learners and share knowledge with peers"
+    },
+    {
+        emoji: "💡",
+        title: "Ask Questions",
+        description: "Get help from experienced contributors and expand your understanding"
+    },
+    {
+        emoji: "🤝",
+        title: "Connect & Grow",
+        description: "Build your network and learn from others' experiences"
+    }
+];
+
+// Load education cards
+function loadEducationCards() {
+    const trendingContainer = document.querySelector('.trending-container');
+    trendingContainer.innerHTML = ''; // Clear existing content
+    
+    educationCards.forEach(card => {
+        const cardElement = document.createElement('div');
+        cardElement.className = 'education-card';
+        cardElement.innerHTML = `
+            <div class="emoji">${card.emoji}</div>
+            <h3>${card.title}</h3>
+            <p>${card.description}</p>
+        `;
+        trendingContainer.appendChild(cardElement);
+    });
+}
+
+// Update the DOMContentLoaded event listener
+document.addEventListener('DOMContentLoaded', () => {
+    // Load education cards instead of trending questions
+    loadEducationCards();
+    
+    // Add event listeners
+    setupEventListeners();
+});
+
+// Setup event listeners
+function setupEventListeners() {
+    // Navigation links
+    const navLinks = document.querySelectorAll('.nav-link');
+    navLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+            navLinks.forEach(l => l.classList.remove('active'));
+            link.classList.add('active');
+        });
+    });
+
+    // Search functionality
+    const searchInput = document.querySelector('.search-input');
+    const searchBtn = document.querySelector('.search-btn');
+
+    searchBtn.addEventListener('click', () => {
+        const searchTerm = searchInput.value.trim();
+        if (searchTerm) {
+            // Implement search functionality
+            console.log('Searching for:', searchTerm);
+        }
+    });
+
+    searchInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            const searchTerm = searchInput.value.trim();
+            if (searchTerm) {
+                // Implement search functionality
+                console.log('Searching for:', searchTerm);
+            }
+        }
+    });
+}
+
+// Add smooth scrolling for navigation
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+            target.scrollIntoView({
+                behavior: 'smooth'
+            });
+        }
+    });
+});
+
+// Check login status and update UI accordingly
+function checkLoginStatus() {
+    const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+    const username = localStorage.getItem('username');
+    const authButtons = document.querySelector('.auth-buttons');
+    
+    if (isLoggedIn) {
+        // Update auth buttons to show logged-in state
+        authButtons.innerHTML = `
+            <span style="color: var(--primary-color); margin-right: 1rem;">Welcome, ${username}</span>
+            <button class="btn signup-btn" onclick="logout()">Logout</button>
+        `;
+    } else {
+        // Update auth buttons to show login/signup options
+        authButtons.innerHTML = `
+            <a href="login.html" class="btn login-btn">Login</a>
+            <a href="sign.html" class="btn signup-btn">Sign Up</a>
+        `;
+    }
+}
+
+// Handle protected page navigation
+function handleProtectedPageNavigation(e) {
+    const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+    const targetPage = e.target.getAttribute('href');
+    
+    // List of pages that require login
+    const protectedPages = ['ask.html', 'answer.html', 'view.html', 'chat.html'];
+    
+    if (protectedPages.includes(targetPage) && !isLoggedIn) {
+        e.preventDefault();
+        alert('Please login to access this page');
+        window.location.href = 'login.html';
+    }
+}
+
+// Logout function
+function logout() {
+    localStorage.removeItem('isLoggedIn');
+    localStorage.removeItem('username');
+    window.location.reload();
+}
+
+// Add event listeners when page loads
+document.addEventListener('DOMContentLoaded', () => {
+    checkLoginStatus();
+    
+    // Add click handlers to protected page links
+    const protectedLinks = document.querySelectorAll('.nav-links a[href="ask.html"], .nav-links a[href="answer.html"], .nav-links a[href="view.html"], .nav-links a[href="chat.html"]');
+    protectedLinks.forEach(link => {
+        link.addEventListener('click', handleProtectedPageNavigation);
+    });
+    
+    // Add click handlers to footer protected links
+    const footerProtectedLinks = document.querySelectorAll('.footer-section a[href="ask.html"], .footer-section a[href="answer.html"], .footer-section a[href="view.html"], .footer-section a[href="chat.html"]');
+    footerProtectedLinks.forEach(link => {
+        link.addEventListener('click', handleProtectedPageNavigation);
+    });
+});
+
+function toggleMenu() {
+    const menuToggle = document.querySelector('.menu-toggle');
+    const navLinks = document.querySelector('.nav-links');
+    const menuOverlay = document.querySelector('.menu-overlay');
+    const body = document.body;
+
+    menuToggle.classList.toggle('active');
+    navLinks.classList.toggle('active');
+    menuOverlay.classList.toggle('active');
+    body.style.overflow = navLinks.classList.contains('active') ? 'hidden' : '';
+}
+
+// Close menu when clicking outside
+document.addEventListener('click', (e) => {
+    const navLinks = document.querySelector('.nav-links');
+    const menuToggle = document.querySelector('.menu-toggle');
+    const menuOverlay = document.querySelector('.menu-overlay');
+    
+    if (navLinks.classList.contains('active') && 
+        !e.target.closest('.nav-links') && 
+        !e.target.closest('.menu-toggle')) {
+        toggleMenu();
+    }
+});
+</script>
+<body>
+    <div class="menu-overlay"></div>
+    <nav class="navbar">
+        <div class="logo-container">
+            <img src="https://i.postimg.cc/XYWpZKGr/Chat-GPT-Image-Apr-2-2025-08-35-41-PM.png" alt="EduWithBuddy Logo" class="logo">
+            <a href="index.html" class="site-title">EduWithBuddy</a>
+        </div>
+        <button class="menu-toggle" aria-label="Toggle menu" onclick="toggleMenu()">
+            <span class="menu-icon"></span>
+            <span class="menu-icon"></span>
+            <span class="menu-icon"></span>
+        </button>
+        <div class="nav-links">
+            <a href="index.html" class="nav-link active">Home</a>
+            <a href="ask.html" class="nav-link">Ask Question</a>
+            <a href="answer.html" class="nav-link">Answer Question</a>
+            <a href="view.html" class="nav-link">View Answers</a>
+            <a href="chat.html" class="nav-link">Chat</a>
+            <a href="about.html" class="nav-link">About Us</a>
+        </div>
+        <div class="auth-buttons">
+            <a href="login.html" class="btn login-btn">Login</a>
+            <a href="sign.html" class="btn signup-btn">Sign Up</a>
+        </div>
+    </nav>
+
+    <main>
+        <section class="hero">
+            <div class="hero-content">
+                <h1>Welcome to EduWithBuddy</h1>
+                <p>Ask Questions, Get Answers, and Connect with Top Contributors</p>
+                <div class="search-container">
+                    <input type="text" placeholder="Search for questions..." class="search-input">
+                    <button class="search-btn"><i class="fas fa-search"></i></button>
+                </div>
+            </div>
+        </section>
+
+        <section class="features">
+            <div class="feature-card">
+                <i class="fas fa-question-circle"></i>
+                <h3>Ask Questions</h3>
+                <p>Get help from our community of experts</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-lightbulb"></i>
+                <h3>Get Answers</h3>
+                <p>Find solutions to your academic queries</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-comments"></i>
+                <h3>Chat with Experts</h3>
+                <p>Connect with top contributors directly</p>
+            </div>
+        </section>
+
+        <section class="trending">
+            <h2>Trending Questions</h2>
+            <div class="trending-container">
+                <!-- Trending questions will be dynamically loaded here -->
+            </div>
+        </section>
+
+        <section class="about-us">
+            <h2>About Us</h2>
+            <div class="team-container">
+                <div class="team-member">
+                    <i class="fas fa-user-graduate"></i>
+                    <h3>Sayan Mazumder</h3>
+                    <p><i class="fas fa-envelope"></i> sayanmazumder65@gmail.com</p>
+                </div>
+                <div class="team-member">
+                    <i class="fas fa-user-graduate"></i>
+                    <h3>Joydip Karmakar</h3>
+                    <p><i class="fas fa-envelope"></i> joydipkarmakar784@gmail.com</p>
+                </div>
+                <div class="team-member">
+                    <i class="fas fa-user-graduate"></i>
+                    <h3>Srijeeta Bera</h3>
+                    <p><i class="fas fa-envelope"></i> srijetabera2610@gmail.com</p>
+                </div>
+                <div class="team-member">
+                    <i class="fas fa-user-graduate"></i>
+                    <h3>Sk Sahagir</h3>
+                    <p><i class="fas fa-envelope"></i> sksahagir.960@gmail.com</p>
+                </div>
+            </div>
+            <div class="college-info">
+                <i class="fas fa-university"></i>
+                <h3>Government College of Engineering and Textile Technology, Serampore</h3>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>EduWithBuddy</h4>
+                <p>Your learning companion</p>
+            </div>
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+                <a href="index.html">Home</a>
+                <a href="ask.html">Ask Question</a>
+                <a href="answer.html">Answer Question</a>
+                <a href="view.html">View Answers</a>
+                <a href="chat.html">Chat</a>
+                <a href="about.html">About Us</a>
+            </div>
+            <div class="footer-section">
+                <h4>Contact Us</h4>
+                <div class="contact-links">
+                    <a href="mailto:sayanmazumder65@gmail.com"><i class="fas fa-envelope"></i> sayanmazumder65@gmail.com</a>
+                    <a href="mailto:joydipkarmakar784@gmail.com"><i class="fas fa-envelope"></i> joydipkarmakar784@gmail.com</a>
+                    <a href="mailto:srijetabera2610@gmail.com"><i class="fas fa-envelope"></i> srijetabera2610@gmail.com</a>
+                    <a href="mailto:sksahagir.960@gmail.com"><i class="fas fa-envelope"></i> sksahagir.960@gmail.com</a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 EduWithBuddy - All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html> 

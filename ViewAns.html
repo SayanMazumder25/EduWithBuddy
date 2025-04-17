@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Answer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+        }
+        header {
+            background-color: #0078d7;
+            color: white;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        header .nav-links {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        header .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        header .profile {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .container {
+            padding: 10px;
+        }
+        .question-area {
+            background-color: white;
+            padding: 15px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+        .question-area h2 {
+            font-size: 1.8em;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        .question-area .tags span {
+            display: inline-block;
+            background-color: #0078d7;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.9em;
+            margin-right: 5px;
+            margin-bottom: 5px;
+        }
+        .question-area .tags {
+            margin-bottom: 10px;
+        }
+        .question-area .date {
+            font-size: 0.9em;
+            color: #666;
+        }
+        .answers-section {
+            display: flex;
+            gap: 20px;
+            flex-direction: column;
+        }
+        .answer-card {
+            background-color: white;
+            padding: 15px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            flex: 1;
+            margin-bottom: 20px;
+        }
+        .answer-card .actions {
+            margin-top: 10px;
+            display: flex;
+            gap: 10px;
+        }
+        .sidebar {
+            margin-top: 20px;
+            display: flex;
+            gap: 20px;
+            flex-direction: column;
+        }
+        .sidebar-section {
+            background-color: white;
+            padding: 15px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            flex: 1;
+            margin-bottom: 20px;
+        }
+        .action-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+        .action-buttons a {
+            text-decoration: none;
+            background-color: #0078d7;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-weight: bold;
+            text-align: center;
+            transition: background-color 0.3s;
+        }
+        .action-buttons a:hover {
+            background-color: #005bb5;
+        }
+        @media (min-width: 768px) {
+            .answers-section {
+                flex-direction: row;
+            }
+            .sidebar {
+                flex-direction: row;
+            }
+            .sidebar-section {
+                margin-bottom: 0;
+            }
+        }
+        @media (max-width: 767px) {
+            header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .question-area h2 {
+                font-size: 1.5em;
+            }
+            .action-buttons a {
+                padding: 8px 15px;
+                font-size: 0.9em;
+            }
+            .answers-section {
+                gap: 10px;
+            }
+            .answer-card {
+                padding: 10px;
+            }
+            .sidebar {
+                gap: 10px;
+            }
+            .sidebar-section {
+                padding: 10px;
+            }
+        }
+    </style>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            // Fetch question from the local directory
+            fetch("./questions/AskQuestion.html") // Corrected path
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("Failed to fetch question");
+                    }
+                    return response.text();
+                })
+                .then(data => {
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(data, "text/html");
+                    const questionElement = doc.querySelector(".question-area h2");
+
+                    if (questionElement) {
+                        const question = questionElement.textContent;
+                        const tags = doc.querySelector(".question-area .tags").innerHTML;
+                        const date = doc.querySelector(".question-area .date").textContent;
+
+                        document.querySelector(".question-area h2").textContent = question;
+                        document.querySelector(".question-area .tags").innerHTML = tags;
+                        document.querySelector(".question-area .date").textContent = date;
+                    } else {
+                        document.querySelector(".question-area").innerHTML = "<h2>No question found.</h2>";
+                    }
+                })
+                .catch(() => {
+                    document.querySelector(".question-area").innerHTML = "<h2>No question found.</h2>";
+                });
+
+            // Fetch answers from the local directory
+            fetch("./answers/GiveAns.html") // Corrected path
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("Failed to fetch answers");
+                    }
+                    return response.text();
+                })
+                .then(data => {
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(data, "text/html");
+                    const answers = doc.querySelectorAll(".answer-card");
+
+                    const answersSection = document.querySelector(".answers-section");
+                    answersSection.innerHTML = ""; // Clear existing answers
+
+                    const contributors = new Set(); // To store unique contributor names
+
+                    if (answers.length > 0) {
+                        answers.forEach(answer => {
+                            answersSection.appendChild(answer.cloneNode(true));
+                            const responder = answer.querySelector("p strong").nextSibling.textContent.trim();
+                            contributors.add(responder);
+                        });
+
+                        // Update Top Contributors section
+                        const contributorsList = document.querySelector(".sidebar-section ul");
+                        contributorsList.innerHTML = ""; // Clear existing contributors
+                        contributors.forEach(contributor => {
+                            const li = document.createElement("li");
+                            li.textContent = contributor;
+                            contributorsList.appendChild(li);
+                        });
+                    } else {
+                        answersSection.innerHTML = "<p>No answers available for this question.</p>";
+                    }
+                })
+                .catch(() => {
+                    document.querySelector(".answers-section").innerHTML = "<p>No answers available for this question.</p>";
+                });
+        });
+    </script>
+</head>
+<body>
+    <header>
+        <div style="display: flex; align-items: center; background-color: #0078d7; padding: 15px 30px;">
+            <a href="https://ibb.co/TxQn2jqq">
+                <img src="https://i.postimg.cc/Kv1ngXjt/Chat-GPT-Image-Apr-2-2025-08-35-41-PM.png" alt="EduWithBuddy Logo" border="0" style="height: 40px; width: auto; margin-right: 15px;">
+            </a>
+            <h1 style="color: yellow; font-family: 'Verdana', sans-serif; font-size: 1.8em; margin: 0;">EduWithBuddy</h1>
+            <span style="margin-left: auto; color: white; font-family: 'Verdana', sans-serif; font-size: 1.2em;">Learn. Grow. Explore</span>
+        </div>
+    </header>
+    <div class="container">
+        <div class="question-area">
+            <h2>Loading question...</h2>
+            <p class="tags">Loading tags...</p>
+            <p class="date">Loading date...</p>
+        </div>
+        <div class="answers-section">
+            <p>Loading answers...</p>
+        </div>
+        <div class="action-buttons">
+            <a href="frontPage.html">Back to Home</a>
+        </div>
+        <div class="sidebar">
+            <div class="sidebar-section">
+                <h3>Top Contributors</h3>
+                <ul>
+                    <!-- Contributors will be dynamically added here -->
+                </ul>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.getElementById("answerForm").addEventListener("submit", function (e) {
+            e.preventDefault();
+            const answerText = this.answer.value.trim();
+            const responderName = this.responder.value.trim();
+
+            if (answerText && responderName) {
+                const answersSection = document.querySelector(".answers-section");
+
+                const answerCard = document.createElement("div");
+                answerCard.className = "answer-card";
+                answerCard.innerHTML = `
+                    <p><strong>Responder:</strong> ${responderName}</p>
+                    <p>${answerText}</p>
+                    <div class="actions">
+                        <button>Thumbs Up</button>
+                        <button>Comment</button>
+                        <button>Flag</button>
+                    </div>
+                `;
+                answersSection.appendChild(answerCard);
+
+                // Clear the form
+                this.reset();
+            } else {
+                alert("Please fill in both fields before submitting.");
+            }
+        });
+    </script>
+    <footer>
+        <nav>
+            <!-- Removed redundant footer links -->
+        </nav>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - EduWithBuddy</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* Additional styles specific to login page */
+        .login-container {
+            max-width: 400px;
+            margin: 120px auto 40px;
+            padding: 2rem;
+            background-color: var(--white);
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .login-container h2 {
+            text-align: center;
+            color: var(--secondary-color);
+            margin-bottom: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-color);
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .error-message {
+            color: var(--accent-color);
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+            display: none;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, var(--primary-color), #4a6cf7);
+            color: var(--white);
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(64, 123, 255, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .login-btn:hover {
+            background: linear-gradient(135deg, #4a6cf7, var(--primary-color));
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(64, 123, 255, 0.4);
+        }
+
+        .login-btn:active {
+            transform: translateY(0);
+        }
+
+        .signup-link {
+            text-align: center;
+            margin-top: 1.5rem;
+        }
+
+        .signup-link a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .signup-link a:hover {
+            text-decoration: underline;
+        }
+
+        /* Hamburger Menu Styles */
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 30px;
+            height: 21px;
+            cursor: pointer;
+            z-index: 1000;
+            margin-right: 1rem;
+        }
+
+        .menu-toggle span {
+            width: 100%;
+            height: 3px;
+            background-color: var(--primary-color);
+            transition: all 0.3s ease;
+        }
+
+        .menu-overlay {
+            position: fixed;
+            top: 60px;
+            left: -100%;
+            width: 250px;
+            height: calc(100vh - 60px);
+            background-color: var(--white);
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+            z-index: 998;
+            transition: all 0.4s ease;
+        }
+
+        .menu-overlay.active {
+            left: 0;
+        }
+
+        .menu-toggle.active span:first-child {
+            transform: rotate(45deg) translate(6px, 6px);
+        }
+
+        .menu-toggle.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .menu-toggle.active span:last-child {
+            transform: rotate(-45deg) translate(6px, -6px);
+        }
+
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: flex;
+                order: -1;
+            }
+
+            .nav-links {
+                display: none;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+                padding: 1rem;
+            }
+
+            .nav-links.active {
+                display: flex;
+                position: fixed;
+                top: 60px;
+                left: 0;
+                width: 250px;
+                height: calc(100vh - 60px);
+                background-color: var(--white);
+                z-index: 999;
+                box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+            }
+
+            .nav-link {
+                color: var(--text-color);
+                font-size: 1.1rem;
+                width: 100%;
+                padding: 0.5rem 0;
+                transition: all 0.3s ease;
+            }
+
+            .nav-link:hover {
+                color: var(--primary-color);
+                padding-left: 0.5rem;
+            }
+
+            .auth-buttons {
+                margin-top: auto;
+                padding: 1rem;
+                width: 100%;
+                display: flex;
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .auth-buttons .btn {
+                width: 100%;
+                text-align: center;
+            }
+        }
+
+        /* Update navbar height */
+        .navbar {
+            padding: 0.5rem 5%;
+            height: 60px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo-container">
+            <img src="https://i.postimg.cc/XYWpZKGr/Chat-GPT-Image-Apr-2-2025-08-35-41-PM.png" alt="EduWithBuddy Logo" class="logo">
+            <a href="index.html" class="site-title">EduWithBuddy</a>
+        </div>
+        <div class="menu-toggle" onclick="toggleMenu()">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <div class="nav-links">
+            <a href="index.html" class="nav-link">Home</a>
+            <a href="ask.html" class="nav-link">Ask Question</a>
+            <a href="answer.html" class="nav-link">Answer Question</a>
+            <a href="view.html" class="nav-link">View Answers</a>
+            <a href="chat.html" class="nav-link">Chat</a>
+            <a href="about.html" class="nav-link">About Us</a>
+        </div>
+        <div class="auth-buttons">
+            <button class="btn login-btn">Login</button>
+            <button class="btn signup-btn">Sign Up</button>
+        </div>
+    </nav>
+    <div class="menu-overlay"></div>
+
+    <main>
+        <div class="login-container">
+            <h1 class="page-title">Login to Your Account</h1>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" class="form-control" required>
+                    <div class="error-message" id="emailError"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" class="form-control" required>
+                    <div class="error-message" id="passwordError"></div>
+                </div>
+
+                <button type="submit" class="login-btn">
+                    <i class="fas fa-sign-in-alt"></i>
+                    Login to Your Account
+                </button>
+            </form>
+            <div class="signup-link">
+                Don't have an account? <a href="sign.html">Sign up here</a>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>EduWithBuddy</h4>
+                <p>Your learning companion</p>
+            </div>
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+                <a href="index.html">Home</a>
+                <a href="ask.html">Ask Question</a>
+                <a href="answer.html">Answer Question</a>
+                <a href="view-answers.html">View Answers</a>
+                <a href="#">Chat</a>
+                <a href="about.html">About Us</a>
+            </div>
+            <div class="footer-section">
+                <h4>Connect With Us</h4>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 EduWithBuddy. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Get form values
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            // Reset error messages
+            document.querySelectorAll('.error-message').forEach(error => {
+                error.style.display = 'none';
+                error.textContent = '';
+            });
+
+            // Get users from localStorage
+            const users = JSON.parse(localStorage.getItem('users') || '[]');
+            
+            // Find user with matching email and password
+            const user = users.find(u => u.email === email && u.password === password);
+
+            if (user) {
+                // Set login state
+                localStorage.setItem('isLoggedIn', 'true');
+                localStorage.setItem('username', user.fullName);
+                
+                // Redirect to home page
+                window.location.href = 'index.html';
+            } else {
+                // Show error message
+                showError('emailError', 'Invalid email or password');
+            }
+        });
+
+        function showError(elementId, message) {
+            const errorElement = document.getElementById(elementId);
+            errorElement.textContent = message;
+            errorElement.style.display = 'block';
+        }
+
+        function toggleMenu() {
+            const menuToggle = document.querySelector('.menu-toggle');
+            const navLinks = document.querySelector('.nav-links');
+            const menuOverlay = document.querySelector('.menu-overlay');
+            const body = document.body;
+
+            menuToggle.classList.toggle('active');
+            navLinks.classList.toggle('active');
+            menuOverlay.classList.toggle('active');
+            body.style.overflow = navLinks.classList.contains('active') ? 'hidden' : '';
+        }
+
+        // Close menu when clicking outside
+        document.addEventListener('click', (e) => {
+            const navLinks = document.querySelector('.nav-links');
+            const menuToggle = document.querySelector('.menu-toggle');
+            
+            if (navLinks.classList.contains('active') && 
+                !e.target.closest('.nav-links') && 
+                !e.target.closest('.menu-toggle')) {
+                toggleMenu();
+            }
+        });
+    </script>
+</body>
+</html>

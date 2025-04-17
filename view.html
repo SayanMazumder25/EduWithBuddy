@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Answers - EduWithBuddy</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="responsive.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* Additional styles for view answers page */
+        .logo {
+            width: 40px;
+            height: 40px;
+            margin-right: 10px;
+        }
+
+        .site-title {
+            color: var(--primary-color);
+            font-size: 1.5rem;
+            margin: 0;
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo {
+            height: 40px;
+            width: auto;
+        }
+
+        .site-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .view-container {
+            max-width: 800px;
+            margin: 120px auto 40px;
+            padding: 2rem;
+        }
+
+        .question-card {
+            background-color: var(--white);
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+            transition: all 0.5s ease;
+        }
+
+        .question-card.removing {
+            opacity: 0;
+            transform: translateY(-20px);
+            height: 0;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        .question-card h3 {
+            color: var(--secondary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .question-meta {
+            display: flex;
+            gap: 1rem;
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .answers-section {
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #eee;
+        }
+
+        .answer-card {
+            background-color: var(--light-gray);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .answer-meta {
+            display: flex;
+            justify-content: space-between;
+            color: #666;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+
+        .login-prompt {
+            text-align: center;
+            padding: 2rem;
+            background-color: var(--light-gray);
+            border-radius: 10px;
+            margin-top: 2rem;
+        }
+
+        .login-prompt p {
+            margin-bottom: 1rem;
+            color: var(--text-color);
+        }
+
+        .login-prompt a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .login-prompt a:hover {
+            text-decoration: underline;
+        }
+
+        .resolve-button {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            color: #666;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            z-index: 10;
+        }
+
+        .resolve-button:hover {
+            color: var(--primary-color);
+            background-color: rgba(64, 123, 255, 0.1);
+            transform: scale(1.1);
+        }
+
+        .resolve-button.resolved {
+            color: #28a745;
+        }
+
+        .resolve-button i {
+            transition: all 0.3s ease;
+            font-size: 1.3rem;
+        }
+
+        .resolve-button:hover i {
+            transform: scale(1.2);
+        }
+
+        .question-card.resolved {
+            border-left: 4px solid #28a745;
+        }
+
+        .question-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+
+        .question-content {
+            margin-bottom: 1rem;
+        }
+
+        .no-answers {
+            text-align: center;
+            padding: 2rem;
+            color: #666;
+        }
+
+        .filter-section {
+            margin-bottom: 2rem;
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-select {
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            min-width: 150px;
+        }
+
+        .page-title {
+            text-align: center;
+            color: var(--secondary-color);
+            margin-bottom: 2rem;
+        }
+
+        .chat-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background-color: var(--light-gray);
+            color: var(--primary-color);
+            margin-left: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .chat-icon:hover {
+            background-color: var(--primary-color);
+            color: var(--white);
+            transform: scale(1.1);
+        }
+
+        .answer-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        /* Hamburger Menu Styles */
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 30px;
+            height: 21px;
+            cursor: pointer;
+            z-index: 1000;
+            position: relative;
+        }
+
+        .menu-toggle span {
+            width: 100%;
+            height: 3px;
+            background-color: var(--primary-color);
+            transition: all 0.3s ease;
+        }
+
+        .menu-overlay {
+            position: fixed;
+            top: 60px;
+            right: -100%;
+            width: 100%;
+            height: calc(100vh - 60px);
+            background-color: rgba(255, 255, 255, 0.95);
+            z-index: 998;
+            transition: all 0.4s ease;
+            display: none;
+        }
+
+        .menu-overlay.active {
+            right: 0;
+            display: block;
+        }
+
+        .menu-toggle.active span:first-child {
+            transform: rotate(45deg) translate(6px, 6px);
+        }
+
+        .menu-toggle.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .menu-toggle.active span:last-child {
+            transform: rotate(-45deg) translate(6px, -6px);
+        }
+
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: flex;
+            }
+
+            .nav-links {
+                display: none;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1.5rem;
+                padding: 2rem;
+                position: fixed;
+                top: 60px;
+                right: -100%;
+                width: 100%;
+                height: calc(100vh - 60px);
+                background-color: rgba(255, 255, 255, 0.95);
+                z-index: 999;
+                transition: right 0.4s ease;
+            }
+
+            .nav-links.active {
+                display: flex;
+                right: 0;
+            }
+
+            .nav-link {
+                color: var(--text-color);
+                font-size: 1.2rem;
+                width: 100%;
+                padding: 0.5rem 0;
+                transition: all 0.3s ease;
+            }
+
+            .nav-link:hover {
+                padding-left: 10px;
+                color: #FFA500;
+            }
+
+            .auth-buttons {
+                margin-top: auto;
+                padding: 2rem;
+                width: 100%;
+                display: flex;
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .auth-buttons .btn {
+                width: 100%;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo-container">
+            <img src="https://i.postimg.cc/XYWpZKGr/Chat-GPT-Image-Apr-2-2025-08-35-41-PM.png" alt="EduWithBuddy Logo" class="logo">
+            <a href="index.html" class="site-title">EduWithBuddy</a>
+        </div>
+        <div class="menu-toggle" onclick="toggleMenu()">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <div class="nav-links">
+            <a href="index.html" class="nav-link">Home</a>
+            <a href="ask.html" class="nav-link">Ask Question</a>
+            <a href="answer.html" class="nav-link">Answer Question</a>
+            <a href="view.html" class="nav-link active">View Answers</a>
+            <a href="chat.html" class="nav-link">Chat</a>
+            <a href="about.html" class="nav-link">About Us</a>
+        </div>
+        <div class="auth-buttons">
+            <button class="btn login-btn">Login</button>
+            <button class="btn signup-btn">Sign Up</button>
+        </div>
+    </nav>
+    <div class="menu-overlay"></div>
+
+    <main>
+        <div class="view-container">
+            <h1 class="page-title">View Questions and Answers</h1>
+            
+            <div id="loginPrompt" style="display: none; text-align: center; padding: 4rem 2rem;">
+                <h2 style="color: var(--secondary-color); margin-bottom: 1rem;">Please Login to View Questions and Answers</h2>
+                <p style="margin: 1rem 0; font-size: 1.1rem;">You need to be logged in to view questions and answers on EduWithBuddy.</p>
+                <a href="login.html" class="btn login-btn" style="display: inline-block; text-decoration: none; margin-top: 1rem;">
+                    Login Now
+                </a>
+            </div>
+            
+            <div id="contentContainer">
+                <div class="filter-section">
+                    <select class="filter-select" id="gradeFilter">
+                        <option value="">All Grades</option>
+                        <option value="6">Grade 6</option>
+                        <option value="7">Grade 7</option>
+                        <option value="8">Grade 8</option>
+                        <option value="9">Grade 9</option>
+                        <option value="10">Grade 10</option>
+                        <option value="11">Grade 11</option>
+                        <option value="12">Grade 12</option>
+                        <option value="undergraduate">Undergraduate</option>
+                        <option value="masters">Master's</option>
+                        <option value="phd">PhD</option>
+                    </select>
+                    
+                    <select class="filter-select" id="subjectFilter">
+                        <option value="">All Subjects</option>
+                        <option value="mathematics">Mathematics</option>
+                        <option value="physics">Physics</option>
+                        <option value="chemistry">Chemistry</option>
+                        <option value="biology">Biology</option>
+                        <option value="computer-science">Computer Science</option>
+                        <option value="english">English</option>
+                        <option value="history">History</option>
+                        <option value="geography">Geography</option>
+                        <option value="economics">Economics</option>
+                        <option value="literature">Literature</option>
+                        <option value="languages">Languages</option>
+                        <option value="engineering">Engineering</option>
+                        <option value="medicine">Medicine</option>
+                        <option value="business">Business</option>
+                        <option value="arts">Arts</option>
+                    </select>
+                </div>
+
+                <div id="questionsList">
+                    <!-- Questions and answers will be loaded here -->
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>EduWithBuddy</h4>
+                <p>Your learning companion</p>
+            </div>
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+                <a href="index.html">Home</a>
+                <a href="ask.html">Ask Question</a>
+                <a href="answer.html">Answer Question</a>
+                <a href="view.html">View Answers</a>
+                <a href="#">Chat</a>
+                <a href="about.html">About Us</a>
+            </div>
+            <div class="footer-section">
+                <h4>Connect With Us</h4>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                </div>
+            </div>
+            <div class="footer-section">
+                <h4>Contact Us</h4>
+                <div class="contact-links">
+                    <a href="mailto:sayanmazumder65@gmail.com"><i class="fas fa-envelope"></i> sayanmazumder65@gmail.com</a>
+                    <a href="mailto:joydipkarmakar784@gmail.com"><i class="fas fa-envelope"></i> joydipkarmakar784@gmail.com</a>
+                    <a href="mailto:srijetabera2610@gmail.com"><i class="fas fa-envelope"></i> srijetabera2610@gmail.com</a>
+                    <a href="mailto:sksahagir.960@gmail.com"><i class="fas fa-envelope"></i> sksahagir.960@gmail.com</a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 EduWithBuddy - All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Check login status and update UI accordingly
+        function checkLoginStatus() {
+            const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+            const username = localStorage.getItem('username');
+            const authButtons = document.querySelector('.auth-buttons');
+            const loginPrompt = document.getElementById('loginPrompt');
+            const contentContainer = document.getElementById('contentContainer');
+            
+            if (isLoggedIn) {
+                // Update auth buttons to show logged-in state
+                authButtons.innerHTML = `
+                    <span style="color: var(--primary-color); margin-right: 1rem;">Welcome, ${username}</span>
+                    <button class="btn signup-btn" onclick="logout()">Logout</button>
+                `;
+                
+                // Show content and hide login prompt
+                loginPrompt.style.display = 'none';
+                contentContainer.style.display = 'block';
+                
+                // Load questions and answers
+                loadQuestionsAndAnswers();
+            } else {
+                // Update auth buttons to show login/signup options
+                authButtons.innerHTML = `
+                    <a href="login.html" class="btn login-btn">Login</a>
+                    <a href="register.html" class="btn signup-btn">Sign Up</a>
+                `;
+                
+                // Hide content and show login prompt
+                loginPrompt.style.display = 'block';
+                contentContainer.style.display = 'none';
+            }
+        }
+
+        // Load and display questions with their answers
+        function loadQuestionsAndAnswers() {
+            const questionsList = document.getElementById('questionsList');
+            const questions = JSON.parse(localStorage.getItem('questions') || '[]');
+            const answers = JSON.parse(localStorage.getItem('answers') || '[]');
+            const resolvedQuestions = JSON.parse(localStorage.getItem('resolvedQuestions') || '[]');
+            
+            // Get filter values
+            const gradeFilter = document.getElementById('gradeFilter').value;
+            const subjectFilter = document.getElementById('subjectFilter').value;
+            
+            // Filter questions based on selected filters
+            let filteredQuestions = questions;
+            if (gradeFilter) {
+                filteredQuestions = filteredQuestions.filter(q => q.grade === gradeFilter);
+            }
+            if (subjectFilter) {
+                filteredQuestions = filteredQuestions.filter(q => q.subject === subjectFilter);
+            }
+            
+            // Filter out resolved questions
+            filteredQuestions = filteredQuestions.filter(q => !resolvedQuestions.includes(q.id));
+            
+            // Sort questions by timestamp (newest first)
+            filteredQuestions.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+            
+            if (filteredQuestions.length === 0) {
+                questionsList.innerHTML = '<p style="text-align: center; color: #666;">No questions found matching the selected filters.</p>';
+                return;
+            }
+
+            questionsList.innerHTML = filteredQuestions.map(question => {
+                // Find answers for this question
+                const questionAnswers = answers.filter(a => a.questionId === question.id);
+                const isAuthor = localStorage.getItem('username') === question.author;
+                
+                return `
+                    <div class="question-card" id="question-${question.id}">
+                        ${isAuthor ? `
+                            <button class="resolve-button" 
+                                    onclick="toggleResolve('${question.id}')" 
+                                    title="Mark as resolved">
+                                <i class="fas fa-check"></i>
+                            </button>
+                        ` : ''}
+                        <div class="question-header">
+                            <div class="question-meta">
+                                <span><strong>Grade:</strong> ${question.grade}</span>
+                                <span style="margin-left: 1rem;"><strong>Subject:</strong> ${question.subject}</span>
+                            </div>
+                            <div class="question-meta">
+                                Asked by ${question.author}
+                                <a href="chat.html?contact=${encodeURIComponent(question.author)}" class="chat-icon" title="Chat with ${question.author}" onclick="saveChatContact('${question.author}')">
+                                    <i class="fas fa-comment"></i>
+                                </a>
+                                - ${new Date(question.timestamp).toLocaleString()}
+                            </div>
+                        </div>
+                        <div class="question-content">
+                            ${question.question}
+                        </div>
+                        <div class="answers-section">
+                            <h3>Answers (${questionAnswers.length})</h3>
+                            ${questionAnswers.length > 0 ? 
+                                questionAnswers.map(answer => `
+                                    <div class="answer-card">
+                                        <div class="answer-header">
+                                            <span>
+                                                Answered by ${answer.author}
+                                                <a href="chat.html?contact=${encodeURIComponent(answer.author)}" class="chat-icon" title="Chat with ${answer.author}" onclick="saveChatContact('${answer.author}')">
+                                                    <i class="fas fa-comment"></i>
+                                                </a>
+                                            </span>
+                                            <span>${new Date(answer.timestamp).toLocaleString()}</span>
+                                        </div>
+                                        <div class="answer-content">
+                                            ${answer.answer}
+                                            ${answer.pdfFile ? `<p><strong>PDF:</strong> ${answer.pdfFile}</p>` : ''}
+                                            ${answer.mediaFile ? `<p><strong>Media:</strong> ${answer.mediaFile}</p>` : ''}
+                                        </div>
+                                    </div>
+                                `).join('') :
+                                '<div class="no-answers">No answers yet. Be the first to answer!</div>'
+                            }
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Toggle question resolved status
+        function toggleResolve(questionId) {
+            if (!localStorage.getItem('isLoggedIn')) {
+                alert('Please login to mark questions as resolved');
+                window.location.href = 'login.html';
+                return;
+            }
+
+            const resolvedQuestions = JSON.parse(localStorage.getItem('resolvedQuestions') || '[]');
+            const questionIndex = resolvedQuestions.indexOf(questionId);
+            const questionElement = document.getElementById(`question-${questionId}`);
+            const resolveButton = questionElement.querySelector('.resolve-button');
+            
+            if (questionIndex === -1) {
+                // Add to resolved questions
+                resolvedQuestions.push(questionId);
+                localStorage.setItem('resolvedQuestions', JSON.stringify(resolvedQuestions));
+                
+                // Update button appearance
+                resolveButton.classList.add('resolved');
+                resolveButton.innerHTML = '<i class="fas fa-check"></i>';
+                
+                // Add removing class to trigger animation
+                questionElement.classList.add('removing');
+                
+                // Remove the question after animation completes
+                setTimeout(() => {
+                    questionElement.remove();
+                    
+                    // Check if there are any questions left
+                    const remainingQuestions = document.querySelectorAll('.question-card:not(.removing)');
+                    if (remainingQuestions.length === 0) {
+                        document.getElementById('questionsList').innerHTML = 
+                            '<p style="text-align: center; color: #666;">No questions found matching the selected filters.</p>';
+                    }
+                }, 500);
+            } else {
+                // Remove from resolved questions
+                resolvedQuestions.splice(questionIndex, 1);
+                localStorage.setItem('resolvedQuestions', JSON.stringify(resolvedQuestions));
+                loadQuestionsAndAnswers();
+            }
+        }
+
+        // Handle filter changes
+        document.getElementById('gradeFilter').addEventListener('change', loadQuestionsAndAnswers);
+        document.getElementById('subjectFilter').addEventListener('change', loadQuestionsAndAnswers);
+
+        // Logout function
+        function logout() {
+            localStorage.removeItem('isLoggedIn');
+            localStorage.removeItem('username');
+            window.location.reload();
+        }
+
+        // Add this function to the script section
+        function saveChatContact(contactName) {
+            if (!localStorage.getItem('isLoggedIn')) {
+                alert('Please login to chat with users');
+                window.location.href = 'login.html';
+                return;
+            }
+            
+            // Get current user's chat contacts
+            const currentUser = localStorage.getItem('username');
+            let chatContacts = JSON.parse(localStorage.getItem(`chatContacts_${currentUser}`) || '[]');
+            
+            // Add contact if not already in the list
+            if (!chatContacts.includes(contactName)) {
+                chatContacts.push(contactName);
+                localStorage.setItem(`chatContacts_${currentUser}`, JSON.stringify(chatContacts));
+                
+                // Save the contact to the other user's list as well
+                let otherUserContacts = JSON.parse(localStorage.getItem(`chatContacts_${contactName}`) || '[]');
+                if (!otherUserContacts.includes(currentUser)) {
+                    otherUserContacts.push(currentUser);
+                    localStorage.setItem(`chatContacts_${contactName}`, JSON.stringify(otherUserContacts));
+                }
+            }
+        }
+        
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', () => {
+            checkLoginStatus();
+        });
+
+        function toggleMenu() {
+            const menuToggle = document.querySelector('.menu-toggle');
+            const navLinks = document.querySelector('.nav-links');
+            const menuOverlay = document.querySelector('.menu-overlay');
+            const body = document.body;
+
+            menuToggle.classList.toggle('active');
+            navLinks.classList.toggle('active');
+            menuOverlay.classList.toggle('active');
+            
+            if (navLinks.classList.contains('active')) {
+                body.style.overflow = 'hidden';
+                menuOverlay.style.display = 'block';
+            } else {
+                body.style.overflow = '';
+                menuOverlay.style.display = 'none';
+            }
+        }
+
+        // Close menu when clicking outside
+        document.addEventListener('click', (e) => {
+            const navLinks = document.querySelector('.nav-links');
+            const menuToggle = document.querySelector('.menu-toggle');
+            const menuOverlay = document.querySelector('.menu-overlay');
+            
+            if (navLinks.classList.contains('active') && 
+                !e.target.closest('.nav-links') && 
+                !e.target.closest('.menu-toggle')) {
+                toggleMenu();
+            }
+        });
+    </script>
+</body>
+</html>
